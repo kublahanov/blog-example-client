@@ -1,0 +1,12 @@
+:root {
+  font-family: Arial, sans-serif;
+  color: #333333;
+}
+
+body {
+  margin: 0;
+}
+
+#app {
+  /*max-width: 1024px;*/
+}
