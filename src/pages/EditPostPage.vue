@@ -4,6 +4,7 @@
       &laquo;
       <router-link to="/" class="home-link">К списку</router-link>
     </p>
+    <h3>Автор: {{ post.userName }}</h3>
     <h2>Редактирование поста</h2>
     <el-form label-width="auto" class="header-form">
       <el-form-item label="Название">
@@ -123,6 +124,16 @@ onMounted(() => {
 
   if (result) {
     post.value = result;
+
+    if (userStore.user.id !== post.value.userId) {
+      ElNotification({
+        title: "Ошибка",
+        message: "У вас нет прав на редактирование поста с ID = " + route.params.id + "!",
+        type: "error",
+      });
+
+      router.push({ name: "Home" });
+    }
   } else {
     ElNotification({
       title: "Ошибка",
@@ -144,6 +155,9 @@ a.home-link
     color: var(--el-color-primary)
 h2
   font-size: 1.3rem
+h3
+  font-size: 1rem
+  font-weight: normal
 
 .my-10
   margin: 10px auto
