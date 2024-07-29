@@ -55,11 +55,6 @@ const createNewPost = () => {
 // const items = ref([]);
 
 onMounted(async() => {
-  userStore.setUser({
-    id: 1,
-    name: "Иван Петров",
-  });
-
   // try {
   //   const response = await axios.get('/posts');
   //   items.value = response.data;

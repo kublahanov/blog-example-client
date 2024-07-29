@@ -9,9 +9,7 @@
           class=""
           src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
         />
-        <span>
-          Иван Петров
-        </span>
+        <span>{{ userStore.user.name }}</span>
       </div>
     </el-header>
     <el-main>
@@ -23,6 +21,30 @@
 
 <script setup>
 import Footer from "./components/Footer.vue";
+import { inject, onMounted } from "vue";
+import { useUserStore } from "./stores/userStore.js";
+
+const axios = inject("axios");
+
+const userStore = useUserStore();
+
+onMounted(() => {
+  try {
+    axios
+      .post("/auth/login", {
+        email: "test@test.com",
+        password: "1234567",
+      })
+      .then(function (response) {
+        userStore.setUser(response.data.data.user);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  } catch (error) {
+    console.error("Ошибка при загрузке данных пользователя:", error);
+  }
+});
 </script>
 
 <style lang="sass">

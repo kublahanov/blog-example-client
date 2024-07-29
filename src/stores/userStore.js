@@ -8,8 +8,9 @@ export const useUserStore = defineStore("userStore", {
     },
   }),
   actions: {
-    setUser(userData) {
-      this.user = userData;
+    async setUser(userData) {
+      this.user.id = userData.id;
+      this.user.name = userData.name;
     },
   },
 });
