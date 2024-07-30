@@ -69,7 +69,19 @@ export const usePostsStore = defineStore("postsStore", {
       return this.posts.find((post) => post.id == postId);
     },
     async loadPosts(posts) {
-      this.posts = posts;
+      this.posts = [];
+
+      for (const post of posts) {
+        const tags = post.tags.map((tag) => tag.name);
+        this.posts.push({
+          id: post.id,
+          title: post.title,
+          description: post.description,
+          tags,
+          userId: post.user.id,
+          userName: post.user.name,
+        });
+      }
     },
   },
 });

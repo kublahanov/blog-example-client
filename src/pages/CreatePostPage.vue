@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { inject, ref } from "vue";
 import { useRouter } from "vue-router";
 import { Delete } from "@element-plus/icons-vue";
 import { usePostsStore } from "../stores/postsStore.js";
@@ -86,6 +86,8 @@ const router = useRouter();
 
 const postsStore = usePostsStore();
 const userStore = useUserStore();
+
+const axios = inject("axios");
 
 const post = ref({
   id: postsStore.posts.length + 1,
@@ -108,6 +110,23 @@ const removeTag = (index) => {
 
 const createPost = () => {
   postsStore.addPost(post.value);
+
+  try {
+    axios
+      .post("/posts", {
+        title: post.value.title,
+        description: post.value.description,
+        tags: post.value.tags,
+      })
+      .then(function (response) {
+        // console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  } catch (error) {
+    console.error("Ошибка при добавлении поста:", error);
+  }
 
   ElNotification({
     title: "Успешно",

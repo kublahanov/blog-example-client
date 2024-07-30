@@ -19,15 +19,15 @@
         />
       </div>
     </div>
-    <Pagination />
+    <!--<Pagination />-->
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, inject } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import PostItem from "../components/PostItem.vue";
-import Pagination from "../components/Pagination.vue";
+// import Pagination from "../components/Pagination.vue";
 import { usePostsStore } from "../stores/postsStore.js";
 import { useUserStore } from "../stores/userStore.js";
 
@@ -36,7 +36,7 @@ const router = useRouter();
 const postsStore = usePostsStore();
 const userStore = useUserStore();
 
-const axios = inject('axios');
+// const axios = inject('axios');
 
 const isFilterMyPosts = ref(false);
 
@@ -52,16 +52,7 @@ const createNewPost = () => {
   router.push({ name: "CreatePost" });
 };
 
-// const items = ref([]);
-
-onMounted(async() => {
-  // try {
-  //   const response = await axios.get('/posts');
-  //   items.value = response.data;
-  // } catch (error) {
-  //   console.error('Ошибка при получении данных:', error);
-  // }
-});
+onMounted(async () => {});
 </script>
 
 <style lang="sass" scoped>

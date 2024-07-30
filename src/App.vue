@@ -23,26 +23,55 @@
 import Footer from "./components/Footer.vue";
 import { inject, onMounted } from "vue";
 import { useUserStore } from "./stores/userStore.js";
+import { usePostsStore } from "./stores/postsStore.js";
 
 const axios = inject("axios");
 
 const userStore = useUserStore();
+const postsStore = usePostsStore();
 
 onMounted(() => {
+  /**
+   * Work with API.
+   */
   try {
+    // 1. Get user or login
+    if (localStorage.getItem("token")) {
+      axios
+        .get("/user")
+        .then(function (response) {
+          userStore.setUser(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      axios
+        .post("/auth/login", {
+          email: "test@test.com",
+          password: "1234567",
+        })
+        .then(function (response) {
+          userStore.setUser(response.data.data.user);
+          localStorage.setItem("token", response.data.data.token);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+
+    // 2. Get list of posts
     axios
-      .post("/auth/login", {
-        email: "test@test.com",
-        password: "1234567",
-      })
+      .get("/posts")
       .then(function (response) {
-        userStore.setUser(response.data.data.user);
+        console.log(response.data);
+        postsStore.loadPosts(response.data.data);
       })
       .catch(function (error) {
         console.log(error);
       });
   } catch (error) {
-    console.error("Ошибка при загрузке данных пользователя:", error);
+    console.error("Ошибка при загрузке списка постов:", error);
   }
 });
 </script>

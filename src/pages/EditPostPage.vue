@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Delete } from "@element-plus/icons-vue";
 import { usePostsStore } from "../stores/postsStore.js";
@@ -87,6 +87,8 @@ const router = useRouter();
 
 const postsStore = usePostsStore();
 const userStore = useUserStore();
+
+const axios = inject("axios");
 
 const post = ref({
   id: route.params.id,
@@ -110,6 +112,23 @@ const removeTag = (index) => {
 const updatePost = () => {
   postsStore.updatePost(post.value);
 
+  try {
+    axios
+      .put("/posts/" + post.value.id, {
+        title: post.value.title,
+        description: post.value.description,
+        tags: post.value.tags,
+      })
+      .then(function (response) {
+        // console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  } catch (error) {
+    console.error("Ошибка при изменении поста:", error);
+  }
+
   ElNotification({
     title: "Успешно",
     message: "Пост «" + post.value.title + "» отредактирован!",
@@ -128,7 +147,10 @@ onMounted(() => {
     if (userStore.user.id !== post.value.userId) {
       ElNotification({
         title: "Ошибка",
-        message: "У вас нет прав на редактирование поста с ID = " + route.params.id + "!",
+        message:
+          "У вас нет прав на редактирование поста с ID = " +
+          route.params.id +
+          "!",
         type: "error",
       });
 

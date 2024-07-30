@@ -65,6 +65,7 @@ import { useRouter } from "vue-router";
 import { usePostsStore } from "../stores/postsStore.js";
 import { useUserStore } from "../stores/userStore.js";
 import { Delete, Edit } from "@element-plus/icons-vue";
+import { inject } from "vue";
 
 defineProps({
   title: String,
@@ -79,6 +80,8 @@ const router = useRouter();
 const postsStore = usePostsStore();
 const userStore = useUserStore();
 
+const axios = inject("axios");
+
 const editPost = (id) => {
   router.push({ name: "EditPost", params: { id } });
 };
@@ -86,6 +89,19 @@ const editPost = (id) => {
 const deletePost = (id) => {
   if (confirm("Вы действительно хотите удалить этот пост?")) {
     postsStore.deletePost(id);
+
+    try {
+      axios
+        .delete("/posts/" + id)
+        .then(function (response) {
+          // console.log(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } catch (error) {
+      console.error("Ошибка при удалении поста:", error);
+    }
   }
 };
 </script>
