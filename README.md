@@ -4,8 +4,8 @@
 
 Для возможности локальной установки и запуска проекта необходимо наличие установленных в системе:
 
-- [git] (https://git-scm.com/)
-- [nodejs] (https://nodejs.org/en/download/package-manager)
+- [git](https://git-scm.com/)
+- [nodejs](https://nodejs.org/en/download/package-manager)
 
 ## Шаги по локальной установке
 
