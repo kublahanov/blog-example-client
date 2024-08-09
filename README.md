@@ -1,4 +1,4 @@
-# WinWin Client
+# Blog example (test case): frontend client based on VueJS3 + Element UI
 
 ## Необходимые требования
 
